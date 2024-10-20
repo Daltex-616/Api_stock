@@ -85,5 +85,29 @@ router.put('/actualizar-stock', async (req, res) => {
     }
   });
 
+  // endpoint de negocio 2
+
+// Obtener productos por categoría
+router.get("/productos/categoria/:categoria", async (req, res) => {
+    const categoria = req.params.categoria;
+  
+    try {
+      const productos = await Producto.find({ categoria });
+  
+      if (productos.length === 0) {
+        return res.status(404).send({
+          mensaje: `No se encontraron productos en la categoría: ${categoria}`,
+        });
+      }
+  
+      res.status(200).send(productos);
+    } catch (error) {
+      res.status(500).send({
+        mensaje: "Error al obtener los productos por categoría",
+        error,
+      });
+    }
+  });
+
   
 module.exports = router;
