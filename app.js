@@ -1,10 +1,13 @@
 require('dotenv').config()
 const express = require("express")
 const dbconnect = require('./config/db')
+const productoRoutes = require("./routes/productos.js")
 
 
 const app = express()
 
+app.use(express.json())
+app.use(productoRoutes)
 const port = process.env.PORT
 
 
