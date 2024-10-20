@@ -109,5 +109,27 @@ router.get("/productos/categoria/:categoria", async (req, res) => {
     }
   });
 
+  // Obtener productos con bajo stock
+router.get("/productos/bajo-stock/:cantidad", async (req, res) => {
+    const cantidadMinima = parseInt(req.params.cantidad);
+  
+    try {
+      const productos = await Producto.find({
+        cantidad: { $lt: cantidadMinima },
+      });
+      if (productos.length === 0) {
+        return res.status(404).send({
+          mensaje: `No se encontraron productos con stock menor a: ${cantidadMinima}`,
+        });
+      }
+      res.status(200).send(productos);
+    } catch (error) {
+      res.status(500).send({
+        mensaje: "Error al obtener los productos con bajo stock",
+        error,
+      });
+    }
+  });
+
   
 module.exports = router;
